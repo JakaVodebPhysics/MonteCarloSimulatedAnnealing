@@ -1,0 +1,30 @@
+#!/bin/bash
+#SBATCH --time=168:00:00   
+#SBATCH --mem=4096
+#SBATCH --constraint=new|nano
+
+FILE="<<ENTER THE WORKING DIRECTORY>>/input.txt"
+cat <<EOF > $FILE
+${1}
+${2}
+${3}
+${4}
+${5}
+${6}
+${7}
+${8}
+${9}
+${10}
+${11}
+${12}
+${13}
+${14}
+${15}
+${16}
+${17}
+${18}
+EOF
+sleep 0.1
+gfortran -fopenmp -O3 -march=native /home/vodebj12/CMC_polaroni/thermodynamics.f90 -o /home/vodebj12/CMC_polaroni/thermodynamics.exe
+sleep 0.1
+/home/vodebj12/CMC_polaroni/thermodynamics.exe
