@@ -27,7 +27,7 @@ First of all it is important to make a few modifications:
 
 Afterwards, input the desired parameters in thermo_script and run it. The output should consist of four files starting with all_konf_, konf_, en_ and cv_. Then run the necessary code in CodeCheck.nb to view the results. A fair warning though, calculations for system sizes up to 30x30 sites are quite fast but get exponentially slower with increasing the size.
 
-The uploaded files already contain an example of a frustrated system, where there is no crystallization. There is a glassy transition present.
+The uploaded files already contain an example of a frustrated system, where there is no crystallization. There is a glassy transition present. The file slurm - ... contains the number of second required to simulate the example. It is the output file of the Frotran program named as such beacuse it was outputed on within the context of a SLURM job.
 
 PARAMETER DEFINITIONS:
 
