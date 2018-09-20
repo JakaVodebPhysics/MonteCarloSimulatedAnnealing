@@ -21,9 +21,9 @@ HOW TO RUN THE CODE:
 First of all it is important to make a few modifications:
 
 - In the file thermodynamics.f90 one needs to define the working directory of the program in the varible pwd (for example: pwd="/mydirectory/").
-- In the file thermodynamics change <<ENTER THE WORKING DIRECTORY>> to your working directory (for example: /mydirectory/)
-- In the file thermo_script change <<ENTER THE WORKING DIRECTORY>> to your working directory (for example: /mydirectory/)
-- In the file CodeCheck.nb change <<ENTER THE WORKING DIRECTORY>> to your working directory (keep in mind the Mathematica standar of directory names)
+- In the file thermodynamics change << ENTER THE WORKING DIRECTORY >> to your working directory (for example: /mydirectory/)
+- In the file thermo_script change << ENTER THE WORKING DIRECTORY >> to your working directory (for example: /mydirectory/)
+- In the file CodeCheck.nb change << ENTER THE WORKING DIRECTORY >> to your working directory (keep in mind the Mathematica standar of directory names)
 
 Afterwards, input the desired parameters in thermo_script and run it. The output should consist of four files starting with all_konf_, konf_, en_ and cv_. Then run the necessary code in CodeCheck.nb to view the results. A fair warning though, calculations for system sizes up to 30x30 sites are quite fast but get exponentially slower with increasing the size.
 
@@ -32,21 +32,39 @@ The uploaded files already contain an example of a frustrated system, where ther
 PARAMETER DEFINITIONS:
 
 answer : Set this to 0 unless you want to use a predefined particle configuration.
+
 lattice : Options are "tri" or "sq" for triagular or square lattice.
+
 tempz : The starting temperature of the system (high temperature).
+
 tempk : The final temperature of the system (low temperature).
-tempi= : Temperature interval (should be small).
+
+tempi : Temperature interval (should be small).
+
 intname : Name your interaction type.
+
 jay : The attraction magnitude. It ca also be repulsion if jay is negative.
+
 lc : how many cs you want to simulate.
+
 c : array of all the cs you want to simulate. one c is the magnitude of the repulsion between particles.
+
 radij : The cutoff of the interaction (maximum is half the system size).
+
 mrad : The range of the hop of a particle in Monte Carlo dynamics.
-ls : r_s
+
+ls : r_s.
+
 le : Number of system sizes to simulate.
-side1 : One side of the system in number of lattice sites along the side
-side2 : Other side of the system in number of lattice sites along the side
-frac : The ration between the number of particles in the system and the number of lattice sites
-ni : The number of Monte Carlo sweeps (ni will get multiplied by the number of particles in the system) to perform at each temperature
-intv : Number of iterations (will also get multiplied by the number of particles in the system) to let pass between sampling the energy and specific heat in the system
-intt=50
+
+side1 : One side of the system in number of lattice sites along the side.
+
+side2 : Other side of the system in number of lattice sites along the side.
+
+frac : The ration between the number of particles in the system and the number of lattice sites.
+
+ni : The number of Monte Carlo sweeps (ni will get multiplied by the number of particles in the system) to perform at each temperature.
+
+intv : Number of iterations (will also get multiplied by the number of particles in the system) to let pass between sampling the energy and specific heat in the system.
+
+intt : Number of sweeps (-||-) before sampling begins.
