@@ -29,6 +29,6 @@ for i in `seq 0 $le1`
 do
 for j in `seq 0 $lc1`
 do
-sbatch "<<ENTER THE WORKING DIRECTORY>>"/thermodynamics ${answer} ${lattice} ${tempz} ${tempk} ${tempi} ${intname} ${jay} ${c[j]} ${radij} ${mrad} ${ls} ${side1} ${side2} 1 ${frac[i]} ${ni} ${intv} ${intt}
+sbatch "<<ENTER THE WORKING DIRECTORY>>"thermodynamics ${answer} ${lattice} ${tempz} ${tempk} ${tempi} ${intname} ${jay} ${c[j]} ${radij} ${mrad} ${ls} ${side1} ${side2} 1 ${frac[i]} ${ni} ${intv} ${intt}
 done
 done

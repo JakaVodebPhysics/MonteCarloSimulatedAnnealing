@@ -3,7 +3,7 @@
 #SBATCH --mem=4096
 #SBATCH --constraint=new|nano
 
-FILE="<<ENTER THE WORKING DIRECTORY>>/input.txt"
+FILE="<<ENTER THE WORKING DIRECTORY>>input.txt"
 cat <<EOF > $FILE
 ${1}
 ${2}

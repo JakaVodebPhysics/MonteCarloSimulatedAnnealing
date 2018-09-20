@@ -116,25 +116,21 @@ do i=-range1,range1
         end if
     end do
 end do
-!Klicanje novega zacetka izbiranja random stevil
+!Seeding the random numbers
 call random_seed
-!Poimenovanje indeksov, ki spremljata izvajanje programa
-!print *, '          delez'
 !Zacetek zanke, ki tece po vseh zeljenih delezih polaronov v sistemu
 do i=1,le
     ni=nit*nbar(i)
     intv=intvt*nbar(i)
     intt=inttt*nbar(i)
-    !Pisanje mest v zanki stevila polaronov v sistemu z namenom lazjega spremljanja delovanja programa
-    !print *, idnint(dble(nbar(i))/dble(size))
-    !Pretvorba temperature v zapis za output
+    !Conversion of parameters to strings for output
     call dec2str (tempz, tempzzi, tempzzd)
     call dec2str (tempk, tempkzi, tempkzd)
     call dec2str (tempi, tempizi, tempizd)
     call dec2str (ls, lszi, lszd)
     call dec2str (jay, jayzi, jayzd)
     call dec2str (c, czi, czd)
-    !Spreminjanje velikosti arrayjev polaronov in praznih mest
+    !Array allocation
     deallocate(enke0)
     !deallocate(nicle0)
     allocate (enke0(2*nbar(i)))
@@ -165,7 +161,7 @@ do i=1,le
         end do
         close(10)
     else if (answer==0) then
-        !Dodeljevanje mest delcem v levi zgornji kot resetke
+        !Initializing the particles in the left upper corner of the system
         count=1
         x=1
         y=1
@@ -189,9 +185,9 @@ do i=1,le
         !print *, 'WRONG ANSWER!'
         go to 20
     end if
-    !Klicanje dinamike polaronov
+    !Calling particle dynamics
 30  call spini(lt, temp, v, side1, side2, range1, range2, ni, intv, intt, nbar(i), enke0, s0, mrad, enm, cvm, s0out)
-    !Pisanje koncne konfiguracije polaronov v sistemu v output
+    !Writing output
     open(10,file=""//trim(pwd)//"konf_latt&
     &_"//trim(lattice)//"_int_"//trim(intname)//"_J_"//trim(jayzi)//"_"//trim(jayzd)//"_C_&
     &"//trim(czi)//"_"//trim(czd)//"_radij_"//trim(str(radij))//"_mrad_"//trim(str(mrad))//"_ls&
@@ -238,7 +234,6 @@ do i=1,le
         write (10,*) (cvm(j,k),k=1,3)
     end do
     close (10)
-!Konec zanke stevila polaronov v sistemu
     end do
 20 radij=0
 call CPU_TIME(finish)
@@ -246,7 +241,7 @@ print *, finish-start
 end program main
 
 subroutine spini(lt, temp, v, side1, side2, range1, range2, ni, intv, intt, nbar, enke, s0, mrad, enm, cvm, s0out)
-!Napoved spremenljivk
+!Variable declaration
 implicit none
 integer(kind=8)               :: ni, i, j, k, lt, intv, intt, ns
 integer                       :: o, p, x, side1, side2, xr, yr, nbar, count, range1, range2, mrad
@@ -254,7 +249,7 @@ integer                       :: enke(2*nbar), s0(side1,side2), s0out(lt,side1,s
 double precision              :: v(2*range1+1,2*range2+1), temp(lt), enm(lt,3), cvm(lt,3)
 double precision, allocatable :: ar(:)
 double precision              :: u, deltaen, t, faktor, nbardi, en, cv, enerr, cverr
-!Zacetek dinamike polaronov
+!Particle dynamics start
 ns=(ni-intt)/intv
 allocate(ar(ns))
 nbardi=1./dble(nbar)
@@ -267,7 +262,7 @@ do j=1,lt
       ar(count)=u*nbardi
       count=count+1
     end if
-    !Zamenjava delca in njegove vrzeli v okviru local update scheme
+    !Particle hole exchange in within the local update scheme
     call RANDOM_NUMBER(u)
     x=1+2*floor(nbar*u)
     call RANDOM_NUMBER(u)
@@ -293,7 +288,7 @@ do j=1,lt
         deltaen=faktor
         call faktorfn(x, enke(x), enke(x+1), side1, side2, nbar, range1, range2, enke, v, faktor)
         deltaen=deltaen+faktor
-        !Random odlocanje o sprejemu oziroma zavracanju zamenjave polaronov na podlagi energijske ugodnosti spremembe
+        !Metropolis part of the Monte Carlo algorithm
         if (deltaen<=0.) then
             s0(xr,yr)=1
             s0(enke(x),enke(x+1))=0
@@ -313,7 +308,7 @@ do j=1,lt
     else
         continue
     end if
-  !Konec dinamike
+  !End of dynamics
   end do
   cv=0.
   cverr=0.
@@ -355,7 +350,7 @@ do j=1,lt
       s0out(j,o,p)=s0(o,p)
     end do
   end do
-  !Konec temperaturne zanke
+  !End of temperature loop
 end do
 end subroutine spini
     
@@ -469,21 +464,21 @@ call SplitString(s,si,sd,".")
 call ReplaceText(sd,"0","",sd)
 end subroutine
 
-!Sprememba integerja v string
+!Integer to string
 character(len=30) function str(k)
   integer, intent(in) :: k
   write (str,*) k
   str = adjustl(str)
 end function str
 
-!Sprememba integerja v string
+!Long integer to string
 character(len=30) function strl(k)
   integer(kind=8), intent(in) :: k
   write (strl,*) k
   strl = adjustl(strl)
 end function strl
 
-!Sprememba reala v string
+!Real to string
 character(len=30) function strr(k)
   integer, parameter  :: ikind=selected_real_kind(p=15)
   real (kind=ikind)   :: k
@@ -491,7 +486,7 @@ character(len=30) function strr(k)
   strr = adjustl(strr)
 end function strr
 
-!Razclenitev stringa na dva dela, ki ju lucuje predpisan znak
+!String split at a specified character
 subroutine SplitString(instring, string1, string2, delim)
 implicit none
 character(len=*)              :: instring,delim
@@ -503,22 +498,20 @@ string1 = instring(1:index-1)
 string2 = instring(index+1:)
 end subroutine SplitString
 
-!Zamenjava vseh zankov enakega predpisanega tipa za drug predpisan tip
+!Replace characters
 subroutine ReplaceText (s,text,rep,outs)
-!Napoved spremenljivk
+!Variable declaration
 implicit none
 character(len=*) :: s,text,rep
 character(len=*) :: outs
 integer          :: i, nt, nr
-!V primeru samih nicel v stringu zelimo imeti za outs samo 0
+!In case of only zeros in input the output is 0
 if (scan(outs,"123456789")==0) then
   outs="0"
 else
-  !Definiranje outputa in pregled dolzine brez presledkov stringa, ki moramo zamenjati in stringa, ki pride na njegovo mesto
   outs = s
   nt = len_trim(text)
   nr = len_trim(rep)
-  !Zamenjava vseh stringov, ki ustrezajo vnosu
   do i=len(outs),1,-1
     if (scan(outs(i:len(outs)),"123456789")/=0) then
       continue
